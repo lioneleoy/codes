@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+<script type="text/javascript">
+
+    function createExcelSheet() {
+     var xls = new ActiveXObject("Excel.Application");
+        xls.visible = true;
+     var sheet = xls.Workbooks.Open("C:/Users/jayasundari.yadav/Desktop/jaya2.xlsx").ActiveSheet;
+  var i=sheet.UsedRange.rows.Count;
+  var totalColCount = sheet.UsedRange.Columns.Count;
+alert("rows "+i);
+  for (j = 1; j < totalColCount+1; j++){
+   sheet.Cells( i+1, j).Value = document.getElementById(j).value;
+  }
+    }
+ function onOpen() {
+     var xls = new ActiveXObject("Excel.Application");
+        xls.visible = true;
+  
+  //var excel = GetObject("C:/Users/jayasundari.yadav/Desktop/jaya2.xlsx", "Excel.Application");
+  //var sheet1 = excel.Workbooks("Sheet1");
+  
+  
+  var sheet1 = xls.Workbooks.Open("C:/Users/jayasundari.yadav/Desktop/jaya2.xlsx").ActiveSheet;
+alert("onOpen");
+  var totalColCount = sheet1.UsedRange.Columns.Count;
+alert("columns "+totalColCount);
+  var htmlSSR="<form>&nbsp&nbsp";
+  for (j = 1; j < totalColCount+1; j++){
+   var k=sheet1.Cells(1,j).Text;
+   htmlSSR=htmlSSR+k;
+   var z=sheet1.Cells(1,j);
+   htmlSSR=htmlSSR+"   :   <input type=\"text\" id=\""+j+"\"><br><br>&nbsp&nbsp";
+  }
+  htmlSSR=htmlSSR+"<input type=\"button\" onclick=\"createExcelSheet()\" value=\"Create Excel Sheet\"></form><br> ";
+  document.getElementById("mainDiv").innerHTML=htmlSSR;
+  sheet1.Close();
+  xls.Quit();
+ } 
+ window.onload=onOpen;
+</script>
+</head>
+<body>
+ <div id="mainDiv"></div>
+</body>
+</html>
