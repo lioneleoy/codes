@@ -76,6 +76,15 @@ var uiController = (function(){
                 value: document.querySelector(DOMstrings.inputValue).value
             };  
         },
+        addistItem: function(obj, type){
+            //create html with place holder
+            
+            
+            //replace the placeholder tag with actual data
+            
+            //insert HTML into the DOM
+            
+        },
         getDOMStrings: function(){
             return DOMstrings;
         }

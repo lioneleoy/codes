@@ -1,0 +1,18 @@
+{
+  "name": "nodetutorial",
+  "version": "1.0.0",
+  "description": "test package created for tutorial",
+  "main": "myFirst.js",
+  "scripts": {
+    "test": "ls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "NA"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "Lionel Raja",
+  "license": "MIT"
+}
