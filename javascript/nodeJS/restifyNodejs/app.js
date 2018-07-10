@@ -23,6 +23,18 @@ server.get("/user/:id", function(req,res,next){
     return next();
 });
 
+server.put("/user/:id", function(req,res,next){
+    var user = users[req.params.id];
+    var updates = req.params;
+    for (var field in updates){
+        user[field] = updates[field];
+    }
+    res.setHeader('content-type', 'application/json');
+    res.writeHead(200);
+    res.end(JSON.stringify(user));
+    return next();
+});
+
 server.post("/user", function(req,res,next){
     var user = req.params;
     max_user_id++;
