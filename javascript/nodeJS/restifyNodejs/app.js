@@ -47,6 +47,15 @@ server.post("/user", function(req,res,next){
 });
 
 
+server.del("/user/:id", function(req,res,next){
+    delete users[parseInt(req.params.id)];
+    res.setHeader('content-type', 'application/json');
+    res.writeHead(200);
+    res.end(JSON.stringify(true));
+    return next();
+});
+
+
 // function respond(req, res, next) {
 //   res.send('hi ' + req.params.name);
 //   next();
