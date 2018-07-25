@@ -32,7 +32,6 @@ server.get("/", function(req,res,next){
 });
 
 server.get("/user/:id", function(req,res,next){
-
     success(res, next, users[parseInt(req.params.id)]);
 });
 
@@ -42,10 +41,7 @@ server.put("/user/:id", function(req,res,next){
     for (var field in updates){
         user[field] = updates[field];
     }
-    res.setHeader('content-type', 'application/json');
-    res.writeHead(200);
-    res.end(JSON.stringify(user));
-    return next();
+    success(res, next, user);
 });
 
 server.post("/user", function(req,res,next){
@@ -53,19 +49,13 @@ server.post("/user", function(req,res,next){
     max_user_id++;
     user.id = max_user_id;
     users[user.id] = user;
-    res.setHeader('content-type', 'application/json');
-    res.writeHead(200);
-    res.end(JSON.stringify(user));
-    return next();
+    success(res, next, user);
 });
 
 
 server.del("/user/:id", function(req,res,next){
     delete users[parseInt(req.params.id)];
-    res.setHeader('content-type', 'application/json');
-    res.writeHead(200);
-    res.end(JSON.stringify(true));
-    return next();
+    success(res, next, []);
 });
 
 
