@@ -1,6 +1,6 @@
 import feedparser
 
-feed = feedparser.parse("http://feeds.feedburner.com/PythonInsider")
+feed = feedparser.parse("https://www.us-cert.gov/ncas/all.xml")
 
 feed_title = feed['feed']['title']
 feed_entries = feed.entries
