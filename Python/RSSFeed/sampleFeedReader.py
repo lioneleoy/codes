@@ -1,6 +1,10 @@
 import feedparser
 
-feed = feedparser.parse("https://www.us-cert.gov/ncas/all.xml")
+feed = feedparser.parse("https://www.kb.cert.org/vulfeed")
+
+# print len(feed['entries'])
+
+# print feed['entries'][0]['title']
 
 feed_title = feed['feed']['title']
 feed_entries = feed.entries
