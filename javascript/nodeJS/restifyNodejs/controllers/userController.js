@@ -1,4 +1,5 @@
 var helper = require('../config/helperFunction.js');
+var UserModel = require('../models/UserModel.js');
 var users = {};
 var max_user_id = 0;
 
@@ -48,10 +49,15 @@ module.exports = function(server){
             helper.failure(res, next, errors, '400');
         }
         else{
-        var user = req.params;
-        max_user_id++;
-        user.id = max_user_id;
-        users[user.id] = user;
+            var user = new UserModel();
+            user.name = req.params.name;
+            user.email = req.params.email;
+            user.age = req.params.age;
+            user.career = req.params.career;
+            user.save(function(err){
+                if (err){
+                helper.failure(res, next, 'error saving to mongo', '500');}
+            });
         helper.success(res, next, user);}
     });
     
