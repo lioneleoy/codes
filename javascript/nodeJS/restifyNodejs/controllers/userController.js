@@ -1,24 +1,30 @@
 var helper = require('../config/helperFunction.js');
 var UserModel = require('../models/UserModel.js');
-var users = {};
-var max_user_id = 0;
+
 
 module.exports = function(server){
     server.get("/", function(req,res,next){
-        helper.success(res, next, users);
+        UserModel.find({}, function (err, users) {
+            helper.success(res, next, users);
+          });
     });
     
     server.get("/user/:id", function(req,res,next){
-        req.assert('id', 'id is required and must be int').notEmpty().isInt();
+        req.assert('id', 'id is required and must be int').notEmpty();
         var errors = req.validationErrors();
         if (errors){
             helper.failure(res, next, errors[0], '400');
         }
-        else if(typeof(users[req.params.id]) === 'undefined'){
-            helper.failure(res, next ,"specified user not found in DB", '404');
-        }
         else
-        helper.success(res, next, users[parseInt(req.params.id)]);
+        UserModel.findOne({_id: req.params.id}, function (err, user) {
+            if (err){
+                helper.failure(res, next, 'internal error', '500');
+            }
+            if (user === null){
+                helper.failure(res, next, 'user could not be found', '404');
+            }
+            helper.success(res, next, user);
+          });
     });
     
     server.put("/user/:id", function(req,res,next){
