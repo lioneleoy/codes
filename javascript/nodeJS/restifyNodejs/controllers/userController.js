@@ -28,22 +28,31 @@ module.exports = function(server){
     });
     
     server.put("/user/:id", function(req,res,next){
-        req.assert('id', 'id must be valid').notEmpty().isInt();
+        req.assert('id', 'id must be valid').notEmpty();
         var errors = req.validationErrors();
         if (errors){
             helper.failure(res, next, errors[0], '400');
         }
-        else if(typeof(users[req.params.id]) === 'undefined'){
-            helper.failure(res, next ,"specified user not found in DB", '404');
-        }
         else{
-        var user = users[req.params.id];
+            UserModel.findOne({_id: req.params.id}, function (err, user) {
+                if (err){
+                    helper.failure(res, next, 'internal error', '500');
+                }
+                if (user === null){
+                    helper.failure(res, next, 'user could not be found', '404');
+                }
         var updates = req.params;
+        delete updates.id;
         for (var field in updates){
             user[field] = updates[field];
         }
-        helper.success(res, next, user);}
-    });
+        user.save(function(err){
+            if (err){
+            helper.failure(res, next, 'error saving to mongo', '500');}
+        });
+        helper.success(res, next, user);});
+    }});
+ 
     
     server.post("/user", function(req,res,next){
         req.assert('name', 'name is required and must be string').notEmpty();
@@ -69,16 +78,24 @@ module.exports = function(server){
     
     
     server.del("/user/:id", function(req,res,next){
-        req.assert('id', 'id must be valid').notEmpty().isInt();
+        req.assert('id', 'id must be valid').notEmpty();
         var errors = req.validationErrors();
         if (errors){
             helper.failure(res, next, errors[0], '400');
         }
-        else if(typeof(users[req.params.id]) === 'undefined'){
-            helper.failure(res, next ,"specified user not found in DB", '404');
-        }
         else{
-        delete users[parseInt(req.params.id)];
-        helper.success(res, next, []);}
-    });
+            UserModel.findOne({_id: req.params.id}, function (err, user) {
+                if (err){
+                    helper.failure(res, next, 'internal error', '500');
+                }
+                if (user === null){
+                    helper.failure(res, next, 'user could not be found', '404');
+                }
+            });
+            user.remove(function(err){
+                if (err){
+                helper.failure(res, next, 'error saving to mongo', '500');}
+            });
+            helper.success(res, next, user);
+        }});
 }
