@@ -45,4 +45,11 @@ server.use(function(req, res, next){
         else{
         return next();}
     });
+
+//api throttling
+    server.use(restify.plugins.throttle({
+        rate : 1,
+        burst: 2,
+        xff: true
+    }));
 }
